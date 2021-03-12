@@ -281,13 +281,19 @@ struct AI_Stack
     u8 size;
 };
 
+struct MultiPartnerEnigmaBerry
+{
+    u8 versionSignatureLo;
+    u8 versionSignatureHi;
+    u8 vsScreenHealthFlagsLo;
+    u8 vsScreenHealthFlagsHi;
+    struct BattleEnigmaBerry battleEnigmaBerry;
+};
+
 struct BattleStruct /* 0x2000000 */
 {
-    /*0x00000*/ u8 unk0;
-    /*0x00001*/ bool8 unk1;
-    /*0x00002*/ u8 unk2;
-    /*0x00003*/ bool8 unk3;
-    u8 filler4[0x15DDA];
+    struct MultiPartnerEnigmaBerry multiPartnerEnigmaBerry;
+    u8 filler20[0x15DBE];
     /*0x15DDE*/ u8 unk15DDE;
     /*0x15DDF*/ u8 unk15DDF;
     /*0x15DE0*/ u8 filler15DE0[0x220];

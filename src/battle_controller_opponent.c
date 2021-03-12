@@ -2163,7 +2163,7 @@ void OpponentHandleResetActionMoveSelection(void)
 
 void OpponentHandlecmd55(void)
 {
-    if ((gBattleTypeFlags & BATTLE_TYPE_LINK) && !(gBattleTypeFlags & BATTLE_TYPE_WILD))
+    if ((gBattleTypeFlags & BATTLE_TYPE_LINK) && !(gBattleTypeFlags & BATTLE_TYPE_IS_MASTER))
     {
         gMain.inBattle = FALSE;
         gMain.callback1 = gPreBattleCallback1;

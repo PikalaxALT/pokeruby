@@ -175,7 +175,7 @@ void InitLinkBtlControllers(void)
 
     if (!(gBattleTypeFlags & BATTLE_TYPE_DOUBLE))
     {
-        if (gBattleTypeFlags & BATTLE_TYPE_WILD)
+        if (gBattleTypeFlags & BATTLE_TYPE_IS_MASTER)
         {
             gBattleMainFunc = sub_8010800;
             gBattlerControllerFuncs[0] = SetBankFuncToPlayerBufferRunCommand;
@@ -196,7 +196,7 @@ void InitLinkBtlControllers(void)
     }
     if ((gBattleTypeFlags & (BATTLE_TYPE_MULTI | BATTLE_TYPE_DOUBLE)) == BATTLE_TYPE_DOUBLE)
     {
-        if (gBattleTypeFlags & BATTLE_TYPE_WILD)
+        if (gBattleTypeFlags & BATTLE_TYPE_IS_MASTER)
         {
             gBattleMainFunc = sub_8010800;
             gBattlerControllerFuncs[0] = SetBankFuncToPlayerBufferRunCommand;
@@ -225,7 +225,7 @@ void InitLinkBtlControllers(void)
         return;
     }
     multiplayerId = GetMultiplayerId();
-    if (gBattleTypeFlags & BATTLE_TYPE_WILD)
+    if (gBattleTypeFlags & BATTLE_TYPE_IS_MASTER)
         gBattleMainFunc = sub_8010800;
     for (i = 0; i < 4; i++)
     {
@@ -572,7 +572,7 @@ static void Task_HandleCopyReceivedLinkBuffersData(u8 taskId)
                 return;
             memcpy(gBattleBufferA[battlerId], &ewram15000arr(8, gTasks[taskId].data[15]), blockSize);
             sub_80155A4(battlerId);
-            if (!(gBattleTypeFlags & BATTLE_TYPE_WILD))
+            if (!(gBattleTypeFlags & BATTLE_TYPE_IS_MASTER))
             {
                 gBattlerAttacker = ewram15000arr(2, gTasks[taskId].data[15]);
                 gBattlerTarget = ewram15000arr(3, gTasks[taskId].data[15]);

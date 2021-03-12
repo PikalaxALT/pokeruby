@@ -1591,7 +1591,7 @@ void WallyHandlecmd55(void)
     FadeOutMapMusic(5);
     BeginFastPaletteFade(3);
     WallyBufferExecCompleted();
-    if ((gBattleTypeFlags & BATTLE_TYPE_LINK) && !(gBattleTypeFlags & BATTLE_TYPE_WILD))
+    if ((gBattleTypeFlags & BATTLE_TYPE_LINK) && !(gBattleTypeFlags & BATTLE_TYPE_IS_MASTER))
         gBattlerControllerFuncs[gActiveBattler] = sub_813746C;
 }
 
