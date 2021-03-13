@@ -156,10 +156,10 @@ extern u16 gSpecialVar_ItemId;
 extern u8 gDisplayedStringBattle[];
 extern const u8 BattleText_LinkStandby[];
 
-extern void dp11b_obj_instanciate(u8, u8, s8, s8);
+extern void DoBounceEffect(u8, u8, s8, s8);
 extern u8 GetBattlerPosition(u8);
 extern u8 GetBattlerAtPosition(u8);
-extern void dp11b_obj_free(u8, u8);
+extern void EndBounceEffect(u8, u8);
 extern void sub_8010520(struct Sprite *);
 extern void sub_8010574(struct Sprite *);
 extern bool8 IsDoubleBattle();
@@ -366,8 +366,8 @@ void sub_802C098(void)
 {
     u16 itemId = gBattleBufferA[gActiveBattler][2] | (gBattleBufferA[gActiveBattler][3] << 8);
 
-    dp11b_obj_instanciate(gActiveBattler, 1, 7, 1);
-    dp11b_obj_instanciate(gActiveBattler, 0, 7, 1);
+    DoBounceEffect(gActiveBattler, 1, 7, 1);
+    DoBounceEffect(gActiveBattler, 0, 7, 1);
     if (gMain.newKeys & A_BUTTON)
     {
         PlaySE(SE_SELECT);
@@ -460,8 +460,8 @@ void sub_802C098(void)
 
 void unref_sub_802C2B8(void)
 {
-    dp11b_obj_free(gActiveBattler, 1);
-    dp11b_obj_free(gActiveBattler, 0);
+    EndBounceEffect(gActiveBattler, 1);
+    EndBounceEffect(gActiveBattler, 0);
     gBattlerControllerFuncs[gActiveBattler] = sub_802C2EC;
 }
 
@@ -471,14 +471,14 @@ void sub_802C2EC(void)
     u8 arr[4] = {0, 2, 3, 1};
     s32 i;
 
-    dp11b_obj_instanciate(gUnknown_03004344, 1, 15, 1);
+    DoBounceEffect(gUnknown_03004344, 1, 15, 1);
     i = 0;
     if (gBattlersCount != 0)
     {
         do
         {
             if (i != gUnknown_03004344)
-                dp11b_obj_free(i, 1);
+                EndBounceEffect(i, 1);
             i++;
         } while (i < gBattlersCount);
     }
@@ -488,7 +488,7 @@ void sub_802C2EC(void)
         PlaySE(SE_SELECT);
         gSprites[gBattlerSpriteIds[gUnknown_03004344]].callback = sub_8010574;
         BtlController_EmitTwoReturnValues(1, 10, gMoveSelectionCursor[gActiveBattler] | (gUnknown_03004344 << 8));
-        dp11b_obj_free(gUnknown_03004344, 1);
+        EndBounceEffect(gUnknown_03004344, 1);
         PlayerBufferExecCompleted();
     }
     //_0802C3A8
@@ -497,9 +497,9 @@ void sub_802C2EC(void)
         PlaySE(SE_SELECT);
         gSprites[gBattlerSpriteIds[gUnknown_03004344]].callback = sub_8010574;
         gBattlerControllerFuncs[gActiveBattler] = sub_802C68C;
-        dp11b_obj_instanciate(gActiveBattler, 1, 7, 1);
-        dp11b_obj_instanciate(gActiveBattler, 0, 7, 1);
-        dp11b_obj_free(gUnknown_03004344, 1);
+        DoBounceEffect(gActiveBattler, 1, 7, 1);
+        DoBounceEffect(gActiveBattler, 0, 7, 1);
+        EndBounceEffect(gUnknown_03004344, 1);
     }
     else if (gMain.newKeys & 0x60)
     {
@@ -999,8 +999,8 @@ void debug_sub_8030C24(void)
     switch (gMain.newAndRepeatedKeys)
     {
     case START_BUTTON:
-        dp11b_obj_free(gActiveBattler, 1);
-        dp11b_obj_free(gActiveBattler, 0);
+        EndBounceEffect(gActiveBattler, 1);
+        EndBounceEffect(gActiveBattler, 0);
         gBattlerAttacker = gActiveBattler;
         if ((gMain.heldKeysRaw & B_BUTTON) && (gBattleTypeFlags & BATTLE_TYPE_DOUBLE))
             gBattlerTarget = gBattlerAttacker ^ 2;
@@ -1013,8 +1013,8 @@ void debug_sub_8030C24(void)
         gBattlerControllerFuncs[gActiveBattler] = debug_sub_803107C;
         break;
     case SELECT_BUTTON:
-        dp11b_obj_free(gActiveBattler, 1);
-        dp11b_obj_free(gActiveBattler, 0);
+        EndBounceEffect(gActiveBattler, 1);
+        EndBounceEffect(gActiveBattler, 0);
         gBattlerTarget = gActiveBattler;
         if ((gMain.heldKeysRaw & B_BUTTON) && (gBattleTypeFlags & BATTLE_TYPE_DOUBLE))
             gBattlerAttacker = gBattlerTarget ^ 2;
@@ -1029,8 +1029,8 @@ void debug_sub_8030C24(void)
     case R_BUTTON:
         if ((gMain.heldKeysRaw & B_BUTTON) && (gBattleTypeFlags & BATTLE_TYPE_DOUBLE))
         {
-            dp11b_obj_free(gActiveBattler, 1);
-            dp11b_obj_free(gActiveBattler, 0);
+            EndBounceEffect(gActiveBattler, 1);
+            EndBounceEffect(gActiveBattler, 0);
             gBattlerAttacker = GetBattlerAtPosition(3);
             gBattlerTarget = GetBattlerAtPosition(1);
             sub_80326EC(0);
@@ -1054,8 +1054,8 @@ void debug_sub_8030C24(void)
     case L_BUTTON:
         if ((gMain.heldKeysRaw & B_BUTTON) && (gBattleTypeFlags & BATTLE_TYPE_DOUBLE))
         {
-            dp11b_obj_free(gActiveBattler, 1);
-            dp11b_obj_free(gActiveBattler, 0);
+            EndBounceEffect(gActiveBattler, 1);
+            EndBounceEffect(gActiveBattler, 0);
             gBattlerAttacker = GetBattlerAtPosition(1);
             gBattlerTarget = GetBattlerAtPosition(3);
             sub_80326EC(0);
@@ -1119,8 +1119,8 @@ void debug_sub_803107C(void)
         s32 i;
 
         sub_80326EC(1);
-        dp11b_obj_instanciate(gActiveBattler, 1, 7, 1);
-        dp11b_obj_instanciate(gActiveBattler, 0, 7, 1);
+        DoBounceEffect(gActiveBattler, 1, 7, 1);
+        DoBounceEffect(gActiveBattler, 0, 7, 1);
 
         for (i = 0, count = 0; i < MAX_SPRITES; i++)
         {
@@ -1174,9 +1174,9 @@ void sub_802D274(void)
 
 void sub_802D2E0(void)
 {
-    if (--ewram17810[gActiveBattler].unk9 == 0xFF)
+    if (--eHealthBoxSpritesData[gActiveBattler].unk9 == 0xFF)
     {
-        ewram17810[gActiveBattler].unk9 = 0;
+        eHealthBoxSpritesData[gActiveBattler].unk9 = 0;
         PlayerBufferExecCompleted();
     }
 }
@@ -1199,12 +1199,12 @@ void sub_802D31C(void)
     if (IsCryPlayingOrClearCrySongs())
         r6 = FALSE;
 
-    if (r6 && ewram17810[gActiveBattler].unk1_0 && ewram17810[gActiveBattler ^ 2].unk1_0)
+    if (r6 && eHealthBoxSpritesData[gActiveBattler].unk1_0 && eHealthBoxSpritesData[gActiveBattler ^ 2].unk1_0)
     {
-        ewram17810[gActiveBattler].unk0_7 = 0;
-        ewram17810[gActiveBattler].unk1_0 = 0;
-        ewram17810[gActiveBattler ^ 2].unk0_7 = 0;
-        ewram17810[gActiveBattler ^ 2].unk1_0 = 0;
+        eHealthBoxSpritesData[gActiveBattler].unk0_7 = 0;
+        eHealthBoxSpritesData[gActiveBattler].unk1_0 = 0;
+        eHealthBoxSpritesData[gActiveBattler ^ 2].unk0_7 = 0;
+        eHealthBoxSpritesData[gActiveBattler ^ 2].unk1_0 = 0;
         FreeSpriteTilesByTag(0x27F9);
         FreeSpritePaletteByTag(0x27F9);
         if (gBattleTypeFlags & BATTLE_TYPE_MULTI)
@@ -1214,18 +1214,18 @@ void sub_802D31C(void)
         HandleLowHpMusicChange(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], gActiveBattler);
         if (IsDoubleBattle())
             HandleLowHpMusicChange(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler ^ 2]], gActiveBattler ^ 2);
-        ewram17810[gActiveBattler].unk9 = 3;
+        eHealthBoxSpritesData[gActiveBattler].unk9 = 3;
         gBattlerControllerFuncs[gActiveBattler] = sub_802D2E0;
     }
 }
 
 void sub_802D500(void)
 {
-    if (!ewram17810[gActiveBattler].unk0_3 && !ewram17810[gActiveBattler].unk0_7)
+    if (!eHealthBoxSpritesData[gActiveBattler].unk0_3 && !eHealthBoxSpritesData[gActiveBattler].unk0_7)
         sub_8141828(gActiveBattler, &gPlayerParty[gBattlerPartyIndexes[gActiveBattler]]);
-    if (!ewram17810[gActiveBattler ^ 2].unk0_3 && !ewram17810[gActiveBattler ^ 2].unk0_7)
+    if (!eHealthBoxSpritesData[gActiveBattler ^ 2].unk0_3 && !eHealthBoxSpritesData[gActiveBattler ^ 2].unk0_7)
         sub_8141828(gActiveBattler ^ 2, &gPlayerParty[gBattlerPartyIndexes[gActiveBattler ^ 2]]);
-    if (!ewram17810[gActiveBattler].unk0_3 && !ewram17810[gActiveBattler ^ 2].unk0_3)
+    if (!eHealthBoxSpritesData[gActiveBattler].unk0_3 && !eHealthBoxSpritesData[gActiveBattler ^ 2].unk0_3)
     {
         if (IsDoubleBattle() && !(gBattleTypeFlags & BATTLE_TYPE_MULTI))
         {
@@ -1252,10 +1252,10 @@ void sub_802D500(void)
 void sub_802D680(void)
 {
     if (gSprites[gHealthboxSpriteIds[gActiveBattler]].callback == SpriteCallbackDummy
-     && ewram17810[gActiveBattler].unk1_0)
+     && eHealthBoxSpritesData[gActiveBattler].unk1_0)
     {
-        ewram17810[gActiveBattler].unk0_7 = 0;
-        ewram17810[gActiveBattler].unk1_0 = 0;
+        eHealthBoxSpritesData[gActiveBattler].unk0_7 = 0;
+        eHealthBoxSpritesData[gActiveBattler].unk1_0 = 0;
         FreeSpriteTilesByTag(0x27F9);
         FreeSpritePaletteByTag(0x27F9);
         if (ewram17800[gActiveBattler].substituteSprite)
@@ -1266,7 +1266,7 @@ void sub_802D680(void)
 
 void sub_802D730(void)
 {
-    if (!ewram17810[gActiveBattler].unk0_6 && !IsCryPlayingOrClearCrySongs())
+    if (!eHealthBoxSpritesData[gActiveBattler].unk0_6 && !IsCryPlayingOrClearCrySongs())
     {
         m4aMPlayVolumeControl(&gMPlayInfo_BGM, 0xFFFF, 0x100);
         HandleLowHpMusicChange(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], gActiveBattler);
@@ -1276,10 +1276,10 @@ void sub_802D730(void)
 
 void sub_802D798(void)
 {
-    if (!ewram17810[gActiveBattler].unk0_3 && !ewram17810[gActiveBattler].unk0_7)
+    if (!eHealthBoxSpritesData[gActiveBattler].unk0_3 && !eHealthBoxSpritesData[gActiveBattler].unk0_7)
         sub_8141828(gActiveBattler, &gPlayerParty[gBattlerPartyIndexes[gActiveBattler]]);
     if (gSprites[gUnknown_0300434C[gActiveBattler]].callback == SpriteCallbackDummy
-     && !ewram17810[gActiveBattler].unk0_3)
+     && !eHealthBoxSpritesData[gActiveBattler].unk0_3)
     {
         DestroySprite(&gSprites[gUnknown_0300434C[gActiveBattler]]);
         sub_8045A5C(gHealthboxSpriteIds[gActiveBattler], &gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], 0);
@@ -1454,7 +1454,7 @@ void sub_802DD10(u8 taskId)
 {
     u8 bank = gTasks[taskId].data[2];
 
-    if (!ewram17810[bank].unk0_6)
+    if (!eHealthBoxSpritesData[bank].unk0_6)
     {
         u8 pkmnIndex = gTasks[taskId].data[0];
 
@@ -1495,7 +1495,7 @@ void sub_802DE10(void)
 
 void sub_802DEAC(void)
 {
-    if (!ewram17810[gActiveBattler].unk0_6)
+    if (!eHealthBoxSpritesData[gActiveBattler].unk0_6)
     {
         FreeSpriteOamMatrix(&gSprites[gBattlerSpriteIds[gActiveBattler]]);
         DestroySprite(&gSprites[gBattlerSpriteIds[gActiveBattler]]);
@@ -1559,7 +1559,7 @@ void sub_802E03C(void)
 
 void bx_wait_t1(void)
 {
-    if (!gDoingBattleAnim || !ewram17810[gActiveBattler].unk0_6)
+    if (!gDoingBattleAnim || !eHealthBoxSpritesData[gActiveBattler].unk0_6)
         PlayerBufferExecCompleted();
 }
 
@@ -1712,13 +1712,13 @@ void sub_802E424(void)
 
 void sub_802E434(void)
 {
-    if (!ewram17810[gActiveBattler].unk0_4)
+    if (!eHealthBoxSpritesData[gActiveBattler].unk0_4)
         PlayerBufferExecCompleted();
 }
 
 void sub_802E460(void)
 {
-    if (!ewram17810[gActiveBattler].unk0_5)
+    if (!eHealthBoxSpritesData[gActiveBattler].unk0_5)
         PlayerBufferExecCompleted();
 }
 
@@ -2368,7 +2368,7 @@ void PlayerHandleReturnPokeToBall(void)
 {
     if (gBattleBufferA[gActiveBattler][1] == 0)
     {
-        ewram17810[gActiveBattler].unk4 = 0;
+        eHealthBoxSpritesData[gActiveBattler].unk4 = 0;
         gBattlerControllerFuncs[gActiveBattler] = sub_802FB2C;
     }
     else
@@ -2382,17 +2382,17 @@ void PlayerHandleReturnPokeToBall(void)
 
 void sub_802FB2C(void)
 {
-    switch (ewram17810[gActiveBattler].unk4)
+    switch (eHealthBoxSpritesData[gActiveBattler].unk4)
     {
     case 0:
         if (ewram17800[gActiveBattler].substituteSprite)
             move_anim_start_t4(gActiveBattler, gActiveBattler, gActiveBattler, 5);
-        ewram17810[gActiveBattler].unk4 = 1;
+        eHealthBoxSpritesData[gActiveBattler].unk4 = 1;
         break;
     case 1:
-        if (!ewram17810[gActiveBattler].unk0_6)
+        if (!eHealthBoxSpritesData[gActiveBattler].unk0_6)
         {
-            ewram17810[gActiveBattler].unk4 = 0;
+            eHealthBoxSpritesData[gActiveBattler].unk4 = 0;
             move_anim_start_t4(gActiveBattler, gActiveBattler, gActiveBattler, 1);
             gBattlerControllerFuncs[gActiveBattler] = sub_802DEAC;
         }
@@ -2458,17 +2458,17 @@ void PlayerHandleTrainerSlideBack(void)
 
 void PlayerHandlecmd10(void)
 {
-    if (ewram17810[gActiveBattler].unk4 == 0)
+    if (eHealthBoxSpritesData[gActiveBattler].unk4 == 0)
     {
         if (ewram17800[gActiveBattler].substituteSprite)
             move_anim_start_t4(gActiveBattler, gActiveBattler, gActiveBattler, 5);
-        ewram17810[gActiveBattler].unk4++;
+        eHealthBoxSpritesData[gActiveBattler].unk4++;
     }
     else
     {
-        if (ewram17810[gActiveBattler].unk0_6 == 0)
+        if (eHealthBoxSpritesData[gActiveBattler].unk0_6 == 0)
         {
-            ewram17810[gActiveBattler].unk4 = 0;
+            eHealthBoxSpritesData[gActiveBattler].unk4 = 0;
             HandleLowHpMusicChange(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], gActiveBattler);
             PlaySE12WithPanning(SE_FAINT, -64);
             gSprites[gBattlerSpriteIds[gActiveBattler]].data[1] = 0;
@@ -2534,7 +2534,7 @@ void PlayerHandleMoveAnimation(void)
         }
         else
         {
-            ewram17810[gActiveBattler].unk4 = 0;
+            eHealthBoxSpritesData[gActiveBattler].unk4 = 0;
             gBattlerControllerFuncs[gActiveBattler] = sub_8030190;
         }
     }
@@ -2545,7 +2545,7 @@ void sub_8030190(void)
     u16 r4 = gBattleBufferA[gActiveBattler][1] | (gBattleBufferA[gActiveBattler][2] << 8);
     u8 r7 = gBattleBufferA[gActiveBattler][11];
 
-    switch (ewram17810[gActiveBattler].unk4)
+    switch (eHealthBoxSpritesData[gActiveBattler].unk4)
     {
     case 0:
         if (ewram17800[gActiveBattler].substituteSprite == 1 && ewram17800[gActiveBattler].unk0_3 == 0)
@@ -2553,14 +2553,14 @@ void sub_8030190(void)
             ewram17800[gActiveBattler].unk0_3 = 1;
             move_anim_start_t4(gActiveBattler, gActiveBattler, gActiveBattler, 5);
         }
-        ewram17810[gActiveBattler].unk4 = 1;
+        eHealthBoxSpritesData[gActiveBattler].unk4 = 1;
         break;
     case 1:
-        if (ewram17810[gActiveBattler].unk0_6 == 0)
+        if (eHealthBoxSpritesData[gActiveBattler].unk0_6 == 0)
         {
             sub_80326EC(0);
             DoMoveAnim(r4);
-            ewram17810[gActiveBattler].unk4 = 2;
+            eHealthBoxSpritesData[gActiveBattler].unk4 = 2;
         }
         break;
     case 2:
@@ -2573,15 +2573,15 @@ void sub_8030190(void)
                 move_anim_start_t4(gActiveBattler, gActiveBattler, gActiveBattler, 6);
                 ewram17800[gActiveBattler].unk0_3 = 0;
             }
-            ewram17810[gActiveBattler].unk4 = 3;
+            eHealthBoxSpritesData[gActiveBattler].unk4 = 3;
         }
         break;
     case 3:
-        if (ewram17810[gActiveBattler].unk0_6 == 0)
+        if (eHealthBoxSpritesData[gActiveBattler].unk0_6 == 0)
         {
             sub_8031F24();
             sub_80324BC(gActiveBattler, gBattleBufferA[gActiveBattler][1] | (gBattleBufferA[gActiveBattler][2] << 8));
-            ewram17810[gActiveBattler].unk4 = 0;
+            eHealthBoxSpritesData[gActiveBattler].unk4 = 0;
             PlayerBufferExecCompleted();
         }
         break;
@@ -2743,7 +2743,7 @@ void PlayerHandleStatusIconUpdate(void)
     if (!mplay_80342A4(gActiveBattler))
     {
         sub_8045A5C(gHealthboxSpriteIds[gActiveBattler], &gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], 9);
-        ewram17810[gActiveBattler].unk0_4 = 0;
+        eHealthBoxSpritesData[gActiveBattler].unk0_4 = 0;
         gBattlerControllerFuncs[gActiveBattler] = sub_802E434;
     }
 }
@@ -2914,9 +2914,9 @@ void PlayerHandleTrainerBallThrow(void)
     gSprites[gBattlerSpriteIds[gActiveBattler]].oam.paletteNum = paletteNum;
     taskId = CreateTask(task05_08033660, 5);
     gTasks[taskId].data[0] = gActiveBattler;
-    if (ewram17810[gActiveBattler].unk0_0)
+    if (eHealthBoxSpritesData[gActiveBattler].unk0_0)
         gTasks[gUnknown_02024E68[gActiveBattler]].func = sub_8044CA0;
-    ewram17810[4].unk9 |= 1;
+    eHealthBoxSpritesData[4].unk9 |= 1;
     gBattlerControllerFuncs[gActiveBattler] = nullsub_91;
 }
 
@@ -2971,35 +2971,35 @@ void PlayerHandlecmd48(void)
     }
     else
     {
-        ewram17810[gActiveBattler].unk0_0 = 1;
+        eHealthBoxSpritesData[gActiveBattler].unk0_0 = 1;
         gUnknown_02024E68[gActiveBattler] = sub_8044804(gActiveBattler, (struct BattleInterfaceStruct2 *)&gBattleBufferA[gActiveBattler][4], gBattleBufferA[gActiveBattler][1], gBattleBufferA[gActiveBattler][2]);
-        ewram17810[gActiveBattler].unk5 = 0;
+        eHealthBoxSpritesData[gActiveBattler].unk5 = 0;
         if (gBattleBufferA[gActiveBattler][2] != 0)
-            ewram17810[gActiveBattler].unk5 = 0x5D;
+            eHealthBoxSpritesData[gActiveBattler].unk5 = 0x5D;
         gBattlerControllerFuncs[gActiveBattler] = sub_8031064;
     }
 }
 
 void sub_8031064(void)
 {
-    if (ewram17810[gActiveBattler].unk5++ > 0x5C)
+    if (eHealthBoxSpritesData[gActiveBattler].unk5++ > 0x5C)
     {
-        ewram17810[gActiveBattler].unk5 = 0;
+        eHealthBoxSpritesData[gActiveBattler].unk5 = 0;
         PlayerBufferExecCompleted();
     }
 }
 
 void PlayerHandlecmd49(void)
 {
-    if (ewram17810[gActiveBattler].unk0_0)
+    if (eHealthBoxSpritesData[gActiveBattler].unk0_0)
         gTasks[gUnknown_02024E68[gActiveBattler]].func = sub_8044CA0;
     PlayerBufferExecCompleted();
 }
 
 void PlayerHandlecmd50(void)
 {
-    dp11b_obj_free(gActiveBattler, 1);
-    dp11b_obj_free(gActiveBattler, 0);
+    EndBounceEffect(gActiveBattler, 1);
+    EndBounceEffect(gActiveBattler, 0);
     PlayerBufferExecCompleted();
 }
 
@@ -3035,8 +3035,8 @@ void PlayerHandleLinkStandbyMsg(void)
         b_link_standby_message();
         // fall through
     case 1:
-        dp11b_obj_free(gActiveBattler, 1);
-        dp11b_obj_free(gActiveBattler, 0);
+        EndBounceEffect(gActiveBattler, 1);
+        EndBounceEffect(gActiveBattler, 0);
         break;
     case 2:
         b_link_standby_message();

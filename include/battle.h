@@ -451,11 +451,11 @@ struct Struct2017800
     u16 transformedSpecies;
 };
 
-struct Struct2017810
+struct BattleHealthboxInfo
 {
  /*0x00*/ u8 unk0_0:1;
- /*0x00*/ u8 unk0_1:1;
- /*0x00*/ u8 unk0_2:1;
+ /*0x00*/ u8 healthboxIsBouncing:1;
+ /*0x00*/ u8 battlerIsBouncing:1;
  /*0x00*/ u8 unk0_3:1;
  /*0x00*/ u8 unk0_4:1;
  /*0x00*/ u8 unk0_5:1;
@@ -463,8 +463,8 @@ struct Struct2017810
  /*0x00*/ u8 unk0_7:1;
  /*0x01*/ u8 unk1_0:1;
  /*0x01*/ u8 unk1_1:5;
- /*0x02*/ u8 unk2;
- /*0x03*/ u8 unk3;
+ /*0x02*/ u8 healthboxBounceSpriteId;
+ /*0x03*/ u8 battlerBounceSpriteId;
  /*0x04*/ u8 unk4;
  /*0x05*/ u8 unk5;
  /*0x06*/ u8 unk6;
@@ -644,7 +644,7 @@ void sub_8010494(struct Sprite *);
 void sub_801053C(struct Sprite *);
 void oac_poke_ally_(struct Sprite *);
 void nullsub_86(struct Sprite *);
-void objc_dp11b_pingpong(struct Sprite *);
+void SpriteCB_BounceEffect(struct Sprite *);
 void nullsub_41(void);
 void BeginBattleIntro(void);
 void BattleMainCB1(void);

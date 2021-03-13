@@ -331,7 +331,7 @@ u8 StartSendOutMonAnimation(u16 a, u8 side)
     u8 taskId;
 
     gDoingBattleAnim = 1;
-    ewram17810[gActiveBattler].unk0_3 = 1;
+    eHealthBoxSpritesData[gActiveBattler].unk0_3 = 1;
     taskId = CreateTask(SendOutMonAnimation, 5);
     gTasks[taskId].data[1] = a;
     gTasks[taskId].data[2] = side;
@@ -793,12 +793,12 @@ static void sub_8046E9C(struct Sprite *sprite)
 
         gSprites[gBattlerSpriteIds[r4]].pos2.y = 0;
         gDoingBattleAnim = 0;
-        ewram17810[r4].unk0_3 = 0;
+        eHealthBoxSpritesData[r4].unk0_3 = 0;
         FreeSpriteOamMatrix(sprite);
         DestroySprite(sprite);
         for (r3 = 0, i = 0; i < 4; i++)
         {
-            if (ewram17810[i].unk0_3 == 0)
+            if (eHealthBoxSpritesData[i].unk0_3 == 0)
                 r3++;
         }
         if (r3 == 4)
@@ -830,7 +830,7 @@ static void sub_8046FBC(struct Sprite *sprite)
         DestroySprite(&gSprites[gBattlerSpriteIds[sprite->data[6]]]);
         DestroySpriteAndFreeResources(sprite);
         if (gMain.inBattle)
-            ewram17810[r7].unk0_3 = 0;
+            eHealthBoxSpritesData[r7].unk0_3 = 0;
     }
 }
 

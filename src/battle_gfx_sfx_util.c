@@ -152,7 +152,7 @@ void sub_80313A0(struct Sprite *sprite)
 
 void move_anim_start_t2_for_situation(u8 a, u32 b)
 {
-    ewram17810[gActiveBattler].unk0_4 = 1;
+    eHealthBoxSpritesData[gActiveBattler].unk0_4 = 1;
     if (a == 0)
     {
         if (b == 0x20)
@@ -166,7 +166,7 @@ void move_anim_start_t2_for_situation(u8 a, u32 b)
         else if (b == 0x40)
             move_anim_start_t2(gActiveBattler, 5);
         else
-            ewram17810[gActiveBattler].unk0_4 = 0;
+            eHealthBoxSpritesData[gActiveBattler].unk0_4 = 0;
     }
     else
     {
@@ -181,7 +181,7 @@ void move_anim_start_t2_for_situation(u8 a, u32 b)
         else if (b & 0x0000E000)
             move_anim_start_t2(gActiveBattler, 9);
         else
-            ewram17810[gActiveBattler].unk0_4 = 0;
+            eHealthBoxSpritesData[gActiveBattler].unk0_4 = 0;
     }
 }
 
@@ -208,7 +208,7 @@ bool8 move_anim_start_t3(u8 a, u8 b, u8 c, u8 d, u16 e)
     LaunchBattleAnimation(gBattleAnims_General, d, 0);
     taskId = CreateTask(sub_80315E8, 10);
     gTasks[taskId].data[0] = a;
-    ewram17810[gTasks[taskId].data[0]].unk0_5 = 1;
+    eHealthBoxSpritesData[gTasks[taskId].data[0]].unk0_5 = 1;
     return FALSE;
 }
 
@@ -217,7 +217,7 @@ void sub_80315E8(u8 taskId)
     gAnimScriptCallback();
     if (!gAnimScriptActive)
     {
-        ewram17810[gTasks[taskId].data[0]].unk0_5 = 0;
+        eHealthBoxSpritesData[gTasks[taskId].data[0]].unk0_5 = 0;
         DestroyTask(taskId);
     }
 }
@@ -247,7 +247,7 @@ void move_anim_start_t4(u8 a, u8 b, u8 c, u8 d)
     LaunchBattleAnimation(gBattleAnims_Special, d, 0);
     taskId = CreateTask(sub_80316CC, 10);
     gTasks[taskId].data[0] = a;
-    ewram17810[gTasks[taskId].data[0]].unk0_6 = 1;
+    eHealthBoxSpritesData[gTasks[taskId].data[0]].unk0_6 = 1;
 }
 
 void sub_80316CC(u8 taskId)
@@ -255,7 +255,7 @@ void sub_80316CC(u8 taskId)
     gAnimScriptCallback();
     if (!gAnimScriptActive)
     {
-        ewram17810[gTasks[taskId].data[0]].unk0_6 = 0;
+        eHealthBoxSpritesData[gTasks[taskId].data[0]].unk0_6 = 0;
         DestroyTask(taskId);
     }
 }
@@ -271,15 +271,15 @@ bool8 mplay_80342A4(u8 a)
 
     if (IsSEPlaying())
     {
-        ewram17810[a].unk8++;
-        if (ewram17810[gActiveBattler].unk8 < 30)
+        eHealthBoxSpritesData[a].unk8++;
+        if (eHealthBoxSpritesData[gActiveBattler].unk8 < 30)
             return TRUE;
         m4aMPlayStop(&gMPlayInfo_SE1);
         m4aMPlayStop(&gMPlayInfo_SE2);
     }
     if (zero == 0)
     {
-        ewram17810[a].unk8 = 0;
+        eHealthBoxSpritesData[a].unk8 = 0;
         return FALSE;
     }
     return TRUE;
@@ -604,7 +604,7 @@ u8 battle_load_something(u8 *pState, u8 *b)
 
 void sub_8031EE8(void)
 {
-    memset(ewram17810, 0, 0x30);
+    memset(eHealthBoxSpritesData, 0, 0x30);
     memset(&ewram17840, 0, 0x10);
 }
 
@@ -863,12 +863,12 @@ void sub_80326EC(u8 a)
             gSprites[gBattlerSpriteIds[i]].oam.affineMode = a;
             if (a == 0)
             {
-                ewram17810[i].unk6 = gSprites[gBattlerSpriteIds[i]].oam.matrixNum;
+                eHealthBoxSpritesData[i].unk6 = gSprites[gBattlerSpriteIds[i]].oam.matrixNum;
                 gSprites[gBattlerSpriteIds[i]].oam.matrixNum = 0;
             }
             else
             {
-                gSprites[gBattlerSpriteIds[i]].oam.matrixNum = ewram17810[i].unk6;
+                gSprites[gBattlerSpriteIds[i]].oam.matrixNum = eHealthBoxSpritesData[i].unk6;
             }
         }
     }
@@ -880,13 +880,13 @@ void sub_80327CC(void)
 
     LoadCompressedObjectPic(&gUnknown_081FAF24);
     r5 = GetBattlerAtPosition(1);
-    ewram17810[r5].unk7 = CreateSprite(&gSpriteTemplate_81FAF34, GetBattlerSpriteCoord(r5, 0), GetBattlerSpriteCoord(r5, 1) + 32, 0xC8);
-    gSprites[ewram17810[r5].unk7].data[0] = r5;
+    eHealthBoxSpritesData[r5].unk7 = CreateSprite(&gSpriteTemplate_81FAF34, GetBattlerSpriteCoord(r5, 0), GetBattlerSpriteCoord(r5, 1) + 32, 0xC8);
+    gSprites[eHealthBoxSpritesData[r5].unk7].data[0] = r5;
     if (IsDoubleBattle())
     {
         r5 = GetBattlerAtPosition(3);
-        ewram17810[r5].unk7 = CreateSprite(&gSpriteTemplate_81FAF34, GetBattlerSpriteCoord(r5, 0), GetBattlerSpriteCoord(r5, 1) + 32, 0xC8);
-        gSprites[ewram17810[r5].unk7].data[0] = r5;
+        eHealthBoxSpritesData[r5].unk7 = CreateSprite(&gSpriteTemplate_81FAF34, GetBattlerSpriteCoord(r5, 0), GetBattlerSpriteCoord(r5, 1) + 32, 0xC8);
+        gSprites[eHealthBoxSpritesData[r5].unk7].data[0] = r5;
     }
 }
 
@@ -924,15 +924,15 @@ void sub_8032984(u8 a, u16 b)
         if (ewram17800[a].transformedSpecies != 0)
             b = ewram17800[a].transformedSpecies;
         if (gEnemyMonElevation[b] != 0)
-            gSprites[ewram17810[a].unk7].callback = sub_80328A4;
+            gSprites[eHealthBoxSpritesData[a].unk7].callback = sub_80328A4;
         else
-            gSprites[ewram17810[a].unk7].callback = sub_8032978;
+            gSprites[eHealthBoxSpritesData[a].unk7].callback = sub_8032978;
     }
 }
 
 void sub_8032A08(u8 a)
 {
-    gSprites[ewram17810[a].unk7].callback = sub_8032978;
+    gSprites[eHealthBoxSpritesData[a].unk7].callback = sub_8032978;
 }
 
 void sub_8032A38(void)

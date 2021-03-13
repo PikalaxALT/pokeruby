@@ -272,7 +272,7 @@ void bx_battle_menu_t6_2(void)
 #if DEBUG
     else if (gMain.newKeys & R_BUTTON)
     {
-        if (!ewram17810[gActiveBattler].unk0_5)
+        if (!eHealthBoxSpritesData[gActiveBattler].unk0_5)
             move_anim_start_t3(gActiveBattler, gActiveBattler, gActiveBattler, 4, 0);
     }
     else if (gMain.newKeys & START_BUTTON)
@@ -306,7 +306,7 @@ void sub_812B6AC(void)
 
 void bx_wait_t6(void)
 {
-    if (!gDoingBattleAnim || !ewram17810[gActiveBattler].unk0_6)
+    if (!gDoingBattleAnim || !eHealthBoxSpritesData[gActiveBattler].unk0_6)
         SafariBufferExecCompleted();
 }
 
@@ -330,7 +330,7 @@ void sub_812B758(void)
 
 void sub_812B794(void)
 {
-    if (!ewram17810[gActiveBattler].unk0_5)
+    if (!eHealthBoxSpritesData[gActiveBattler].unk0_5)
         SafariBufferExecCompleted();
 }
 
@@ -352,7 +352,7 @@ void SafariBufferExecCompleted(void)
 
 void unref_sub_812B838(void)
 {
-    if (!ewram17810[gActiveBattler].unk0_4)
+    if (!eHealthBoxSpritesData[gActiveBattler].unk0_4)
         SafariBufferExecCompleted();
 }
 

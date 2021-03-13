@@ -1861,7 +1861,7 @@ void sub_8141828(u8 battler, struct Pokemon *mon)
     u8 taskId1, taskId2;
 
     isShiny = 0;
-    ewram17810[battler].unk0_7 = 1;
+    eHealthBoxSpritesData[battler].unk0_7 = 1;
     otId = GetMonData(mon, MON_DATA_OT_ID);
     personality = GetMonData(mon, MON_DATA_PERSONALITY);
 
@@ -1889,7 +1889,7 @@ void sub_8141828(u8 battler, struct Pokemon *mon)
         }
     }
 
-    ewram17810[battler].unk1_0 = 1;
+    eHealthBoxSpritesData[battler].unk1_0 = 1;
 }
 
 static void sub_814191C(u8 taskId)
@@ -1970,7 +1970,7 @@ static void sub_8141AD8(u8 taskId)
         if (gTasks[taskId].data[1] == 1)
         {
             battler = gTasks[taskId].data[0];
-            ewram17810[battler].unk1_0 = 1;
+            eHealthBoxSpritesData[battler].unk1_0 = 1;
         }
 
         DestroyTask(taskId);

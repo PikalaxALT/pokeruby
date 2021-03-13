@@ -348,7 +348,7 @@ static void sub_807BDAC(u8 taskId)
     gAnimScriptCallback();
     if (!gAnimScriptActive)
     {
-        ewram17810[gTasks[taskId].data[0]].unk0_4 = 0;
+        eHealthBoxSpritesData[gTasks[taskId].data[0]].unk0_4 = 0;
         DestroyTask(taskId);
     }
 }

@@ -3256,82 +3256,96 @@ void sub_80105EC(struct Sprite *sprite)
     }
 }
 
-void dp11b_obj_instanciate(u8 bank, u8 b, s8 c, s8 d)
+#define sSinIndex           data[0]
+#define sDelta              data[1]
+#define sAmplitude          data[2]
+#define sBouncerSpriteId    data[3]
+#define sWhich              data[4]
+
+void DoBounceEffect(u8 battler, u8 which, s8 delta, s8 amplitude)
 {
     u8 spriteId;
     u8 objectID;
 
-    if (b)
+    switch (which)
     {
-        if (ewram17810[bank].unk0_1)
+    case 1:
+    default:
+        if (eHealthBoxSpritesData[battler].healthboxIsBouncing)
             return;
-    }
-    else
-    {
-        if (ewram17810[bank].unk0_2)
+        break;
+    case 0:
+        if (eHealthBoxSpritesData[battler].battlerIsBouncing)
             return;
+        break;
     }
 
-    spriteId = CreateInvisibleSpriteWithCallback(objc_dp11b_pingpong);
-    if (b == TRUE)
+    spriteId = CreateInvisibleSpriteWithCallback(SpriteCB_BounceEffect);
+    if (which == 1)
     {
-        objectID = gHealthboxSpriteIds[bank];
-        ewram17810[bank].unk2 = spriteId;
-        ewram17810[bank].unk0_1 = 1;
-        gSprites[spriteId].data[0] = 0x80;
+        objectID = gHealthboxSpriteIds[battler];
+        eHealthBoxSpritesData[battler].healthboxBounceSpriteId = spriteId;
+        eHealthBoxSpritesData[battler].healthboxIsBouncing = 1;
+        gSprites[spriteId].sSinIndex = 0x80;
     }
     else
     {
-        objectID = gBattlerSpriteIds[bank];
-        ewram17810[bank].unk3 = spriteId;
-        ewram17810[bank].unk0_2 = 1;
-        gSprites[spriteId].data[0] = 0xC0;
+        objectID = gBattlerSpriteIds[battler];
+        eHealthBoxSpritesData[battler].battlerBounceSpriteId = spriteId;
+        eHealthBoxSpritesData[battler].battlerIsBouncing = 1;
+        gSprites[spriteId].sSinIndex = 0xC0;
     }
-    gSprites[spriteId].data[1] = c;
-    gSprites[spriteId].data[2] = d;
-    gSprites[spriteId].data[3] = objectID;
-    gSprites[spriteId].data[4] = b;
+    gSprites[spriteId].sDelta = delta;
+    gSprites[spriteId].sAmplitude = amplitude;
+    gSprites[spriteId].sBouncerSpriteId = objectID;
+    gSprites[spriteId].sWhich = which;
     gSprites[objectID].pos2.x = 0;
     gSprites[objectID].pos2.y = 0;
 }
 
-void dp11b_obj_free(u8 a, u8 b)
+void EndBounceEffect(u8 battler, u8 which)
 {
-    u8 r4;
+    u8 spriteId;
 
-    if (b == TRUE)
+    if (which == 1)
     {
-        if (!ewram17810[a].unk0_1)
+        if (!eHealthBoxSpritesData[battler].healthboxIsBouncing)
             return;
-        r4 = gSprites[ewram17810[a].unk2].data[3];
-        DestroySprite(&gSprites[ewram17810[a].unk2]);
-        ewram17810[a].unk0_1 = 0;
+        spriteId = gSprites[eHealthBoxSpritesData[battler].healthboxBounceSpriteId].sBouncerSpriteId;
+        DestroySprite(&gSprites[eHealthBoxSpritesData[battler].healthboxBounceSpriteId]);
+        eHealthBoxSpritesData[battler].healthboxIsBouncing = 0;
     }
     else
     {
-        if (!ewram17810[a].unk0_2)
+        if (!eHealthBoxSpritesData[battler].battlerIsBouncing)
             return;
-        r4 = gSprites[ewram17810[a].unk3].data[3];
-        DestroySprite(&gSprites[ewram17810[a].unk3]);
-        ewram17810[a].unk0_2 = 0;
+        spriteId = gSprites[eHealthBoxSpritesData[battler].battlerBounceSpriteId].sBouncerSpriteId;
+        DestroySprite(&gSprites[eHealthBoxSpritesData[battler].battlerBounceSpriteId]);
+        eHealthBoxSpritesData[battler].battlerIsBouncing = 0;
     }
-    gSprites[r4].pos2.x = 0;
-    gSprites[r4].pos2.y = 0;
+    gSprites[spriteId].pos2.x = 0;
+    gSprites[spriteId].pos2.y = 0;
 }
 
-void objc_dp11b_pingpong(struct Sprite *sprite)
+void SpriteCB_BounceEffect(struct Sprite *sprite)
 {
-    u8 spriteId = sprite->data[3];
+    u8 spriteId = sprite->sBouncerSpriteId;
     s32 var;
 
-    if (sprite->data[4] == 1)
-        var = sprite->data[0];
+    if (sprite->sWhich == 1)
+        var = sprite->sSinIndex;
     else
-        var = sprite->data[0];
+        var = sprite->sSinIndex;
 
-    gSprites[spriteId].pos2.y = Sin(var, sprite->data[2]) + sprite->data[2];
-    sprite->data[0] = (sprite->data[0] + sprite->data[1]) & 0xFF;
+    gSprites[spriteId].pos2.y = Sin(var, sprite->sAmplitude) + sprite->sAmplitude;
+    sprite->sSinIndex = (sprite->sSinIndex + sprite->sDelta) & 0xFF;
 }
+
+#undef sSinIndex
+#undef sDelta
+#undef sAmplitude
+#undef sBouncerSpriteId
+#undef sWhich
 
 void nullsub_41(void)
 {
