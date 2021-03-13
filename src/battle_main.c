@@ -776,7 +776,7 @@ void sub_800F298(void)
                 }
             }
             SetAllPlayersBerryData();
-            memcpy(ewram1D000, gPlayerParty, sizeof(struct Pokemon) * 3);
+            memcpy(eLink_PlayerPartyBuffer, gPlayerParty, sizeof(struct Pokemon) * 3);
             taskId = CreateTask(sub_800DE30, 0);
             gTasks[taskId].data[1] = 0x10E;
             gTasks[taskId].data[2] = 0x5A;
@@ -808,7 +808,7 @@ void sub_800F298(void)
     case 2:
             if (IsLinkTaskFinished())
             {
-                SendBlock(bitmask_all_link_players_but_self(), ewram1D000, sizeof(struct Pokemon) * 2);
+                SendBlock(bitmask_all_link_players_but_self(), eLink_PlayerPartyBuffer, sizeof(struct Pokemon) * 2);
                 gBattleCommunication[MULTIUSE_STATE]++;
             }
 	}
@@ -872,7 +872,7 @@ void sub_800F298(void)
     case 4:
         if (IsLinkTaskFinished())
         {
-            SendBlock(bitmask_all_link_players_but_self(), ewram1D000 + 2, sizeof(struct Pokemon));
+            SendBlock(bitmask_all_link_players_but_self(), eLink_PlayerPartyBuffer + 2, sizeof(struct Pokemon));
             gBattleCommunication[MULTIUSE_STATE]++;
         }
         break;
@@ -3131,8 +3131,8 @@ void sub_8010384(struct Sprite *sprite)
     u16 species;
     u8 yOffset;
 
-    if (ewram17800[r6].transformedSpecies != 0)
-        species = ewram17800[r6].transformedSpecies;
+    if (eBattlerSpritesData[r6].transformedSpecies != 0)
+        species = eBattlerSpritesData[r6].transformedSpecies;
     else
         species = sprite->data[2];
 
@@ -3575,8 +3575,8 @@ void SwitchInClearSetData(void)
 
     for (i = 0; i < gBattlersCount; i++)
     {
-        if (gBattleMons[i].status2 & (gBitTable[gActiveBattler] << 16))
-            gBattleMons[i].status2 &= ~(gBitTable[gActiveBattler] << 16);
+        if (gBattleMons[i].status2 & STATUS2_INFATUATED_WITH(gActiveBattler))
+            gBattleMons[i].status2 &= ~(STATUS2_INFATUATED_WITH(gActiveBattler));
         if ((gBattleMons[i].status2 & STATUS2_WRAPPED) && ewram16020arr(i) == gActiveBattler)
             gBattleMons[i].status2 &= ~STATUS2_WRAPPED;
     }
@@ -3629,8 +3629,8 @@ void UndoEffectsAfterFainting(void)
     {
         if ((gBattleMons[i].status2 & STATUS2_ESCAPE_PREVENTION) && gDisableStructs[i].bankPreventingEscape == gActiveBattler)
             gBattleMons[i].status2 &= ~STATUS2_ESCAPE_PREVENTION;
-        if (gBattleMons[i].status2 & (gBitTable[gActiveBattler] << 16))
-            gBattleMons[i].status2 &= ~(gBitTable[gActiveBattler] << 16);
+        if (gBattleMons[i].status2 & STATUS2_INFATUATED_WITH(gActiveBattler))
+            gBattleMons[i].status2 &= ~(STATUS2_INFATUATED_WITH(gActiveBattler));
         if ((gBattleMons[i].status2 & STATUS2_WRAPPED) && ewram16020arr(i) == gActiveBattler)
             gBattleMons[i].status2 &= ~STATUS2_WRAPPED;
     }

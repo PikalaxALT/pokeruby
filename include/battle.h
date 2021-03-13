@@ -441,7 +441,7 @@ struct Struct2017100
     u32 arr[4];
 };
 
-struct Struct2017800
+struct BattleSpriteInfo
 {
     u8 invisible:1;
     u8 unk0_1:1;

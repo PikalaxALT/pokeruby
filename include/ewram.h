@@ -199,7 +199,7 @@ extern u8 gSharedMem[];
 #define ewram17130                      (gSharedMem[0x17130])
 #define B_FUNCTION_STACK                ((struct BattleCallbacksStack *)        (gSharedMem + 0x17140))
 #define ewram17160                      (gSharedMem[0x17160])
-#define ewram17800                      ((struct Struct2017800 *)    (gSharedMem + 0x17800))
+#define eBattlerSpritesData                      ((struct BattleSpriteInfo *)    (gSharedMem + 0x17800))
 #define ewram17800_2                    (&gSharedMem[0x17800])
 #define EWRAM_17800                     ((struct UnknownStruct1 *)(gSharedMem + 0x17800))
 #define eTransformStatuses              ((struct TransformStatus *)(gSharedMem + 0x17800))
@@ -248,7 +248,7 @@ extern u8 gSharedMem[];
 #define ewram1c000                      (*(struct Unk201C000 *)(gSharedMem + 0x1C000)) // FIXME, names too similar
 #define eHallOfFameMons1                (struct HallofFameMons*)(&gSharedMem[0x1C000])
 #define eHOFPCScreenEffect              (*(struct PCScreenEffectStruct *)(gSharedMem + 0x1c000))
-#define ewram1D000                      ((struct Pokemon *)(gSharedMem + 0x1D000))
+#define eLink_PlayerPartyBuffer                      ((struct Pokemon *)(gSharedMem + 0x1D000))
 #define ewram1D000_2                    ((u16 *)(gSharedMem + 0x1D000))
 #define ewram1D400                      ((u16 *)(gSharedMem + 0x1D400))
 #define ewramSavedItemsPocket           ((struct ItemSlot *)(gSharedMem + 0x1E000))  // saved items pocket (for Wally battle)

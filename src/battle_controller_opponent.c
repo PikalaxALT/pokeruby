@@ -459,7 +459,7 @@ void sub_8033264(void)
 {
     if (gSprites[gHealthboxSpriteIds[gActiveBattler]].callback == SpriteCallbackDummy)
     {
-        if (ewram17800[gActiveBattler].substituteSprite)
+        if (eBattlerSpritesData[gActiveBattler].substituteSprite)
             move_anim_start_t4(gActiveBattler, gActiveBattler, gActiveBattler, 6);
         gBattlerControllerFuncs[gActiveBattler] = sub_80332D0;
     }
@@ -1187,7 +1187,7 @@ void sub_8034B74(void)
     switch (eHealthBoxSpritesData[gActiveBattler].unk4)
     {
     case 0:
-        if (ewram17800[gActiveBattler].substituteSprite)
+        if (eBattlerSpritesData[gActiveBattler].substituteSprite)
             move_anim_start_t4(gActiveBattler, gActiveBattler, gActiveBattler, 5);
         eHealthBoxSpritesData[gActiveBattler].unk4 = 1;
         break;
@@ -1287,7 +1287,7 @@ void OpponentHandlecmd10(void)
 {
     if (eHealthBoxSpritesData[gActiveBattler].unk4 == 0)
     {
-        if (ewram17800[gActiveBattler].substituteSprite)
+        if (eBattlerSpritesData[gActiveBattler].substituteSprite)
             move_anim_start_t4(gActiveBattler, gActiveBattler, gActiveBattler, 5);
         eHealthBoxSpritesData[gActiveBattler].unk4++;
     }
@@ -1362,9 +1362,9 @@ void sub_8035238(void)
     switch (eHealthBoxSpritesData[gActiveBattler].unk4)
     {
     case 0:
-        if (ewram17800[gActiveBattler].substituteSprite && !ewram17800[gActiveBattler].unk0_3)
+        if (eBattlerSpritesData[gActiveBattler].substituteSprite && !eBattlerSpritesData[gActiveBattler].unk0_3)
         {
-            ewram17800[gActiveBattler].unk0_3 = 1;
+            eBattlerSpritesData[gActiveBattler].unk0_3 = 1;
             move_anim_start_t4(gActiveBattler, gActiveBattler, gActiveBattler, 5);
         }
         eHealthBoxSpritesData[gActiveBattler].unk4 = 1;
@@ -1382,10 +1382,10 @@ void sub_8035238(void)
         if (!gAnimScriptActive)
         {
             sub_80326EC(1);
-            if ((ewram17800[gActiveBattler].substituteSprite) && r7 <= 1)
+            if ((eBattlerSpritesData[gActiveBattler].substituteSprite) && r7 <= 1)
             {
                 move_anim_start_t4(gActiveBattler, gActiveBattler, gActiveBattler, 6);
-                ewram17800[gActiveBattler].unk0_3 = 0;
+                eBattlerSpritesData[gActiveBattler].unk0_3 = 0;
             }
             eHealthBoxSpritesData[gActiveBattler].unk4 = 3;
         }
