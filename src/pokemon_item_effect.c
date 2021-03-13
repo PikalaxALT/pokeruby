@@ -280,14 +280,14 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
                                 {
                                     gAbsentBattlerFlags &= ~gBitTable[sp34];
                                     CopyPlayerPartyMonToBattleData(sp34, pokemon_order_func(gBattlerPartyIndexes[sp34]));
-                                    if (GetBattlerSide(gActiveBattler) == 0 && gBattleResults.unk4 < 255)
-                                        gBattleResults.unk4++;
+                                    if (GetBattlerSide(gActiveBattler) == 0 && gBattleResults.numRevivesUsed < 255)
+                                        gBattleResults.numRevivesUsed++;
                                 }
                                 else
                                 {
                                     gAbsentBattlerFlags &= ~gBitTable[gActiveBattler ^ 2];
-                                    if (GetBattlerSide(gActiveBattler) == 0 && gBattleResults.unk4 < 255)
-                                        gBattleResults.unk4++;
+                                    if (GetBattlerSide(gActiveBattler) == 0 && gBattleResults.numRevivesUsed < 255)
+                                        gBattleResults.numRevivesUsed++;
                                 }
                             }
                         }
@@ -327,8 +327,8 @@ bool8 PokemonUseItemEffects(struct Pokemon *pkmn, u16 item, u8 partyIndex, u8 mo
                                     gBattleMons[sp34].hp = data;
                                     if (!(r10 & 0x10) && GetBattlerSide(gActiveBattler) == 0)
                                     {
-                                        if (gBattleResults.unk3 < 255)
-                                            gBattleResults.unk3++;
+                                        if (gBattleResults.numHealingItemsUsed < 255)
+                                            gBattleResults.numHealingItemsUsed++;
                                         // I have to re-use this variable to match.
                                         r5 = gActiveBattler;
                                         gActiveBattler = sp34;

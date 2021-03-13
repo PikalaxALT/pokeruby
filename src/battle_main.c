@@ -3475,12 +3475,13 @@ void BattleStartClearSetData(void)
 
     for (i = 0; i < 8; i++)
     {
-        ewram160ACarr(i) = 0;
-        ewram160CCarr(i) = 0;
-        ewram160E8arr(i) = 0;
-        ewram160F0arr(i) = 0;
-        ewram16100arr(i) = 0;
-        ewram16108arr(i) = 0;
+        // TODO: Replace these with gBattleStruct access but make it match
+        ewram160ACarr(i) = 0; // *((u8 *)gBattleStruct->lastTakenMove + i) = 0;
+        ewram160CCarr(i) = 0; // *((u8 *)gBattleStruct->usedHeldItems + i) = 0;
+        ewram160E8arr(i) = 0; // *(i + 0 * 8 + (u8 *)gBattleStruct->lastTakenMoveFrom0 + 0) = 0;
+        ewram160F0arr(i) = 0; // *(i + 1 * 8 + (u8 *)gBattleStruct->lastTakenMoveFrom0 + 0) = 0;
+        ewram16100arr(i) = 0; // *(i + 0 * 8 + (u8 *)gBattleStruct->lastTakenMoveFrom1 + 0) = 0;
+        ewram16108arr(i) = 0; // *(i + 1 * 8 + (u8 *)gBattleStruct->lastTakenMoveFrom1 + 0) = 0;
     }
 
     gBattleStruct->AI_monToSwitchIntoId[0] = PARTY_SIZE;
@@ -3492,26 +3493,26 @@ void BattleStartClearSetData(void)
     gBattleResults.battleTurnCounter = 0;
     gBattleResults.playerFaintCounter = 0;
     gBattleResults.opponentFaintCounter = 0;
-    gBattleResults.unk2 = 0;
-    gBattleResults.unk3 = 0;
-    gBattleResults.unk4 = 0;
+    gBattleResults.playerSwitchesCounter = 0;
+    gBattleResults.numHealingItemsUsed = 0;
+    gBattleResults.numRevivesUsed = 0;
     gBattleResults.playerMonWasDamaged = 0;
-    gBattleResults.unk5_1 = 0;
+    gBattleResults.usedMasterBall = 0;
     gBattleResults.lastOpponentSpecies = 0;
     gBattleResults.lastUsedMove = 0;
     gBattleResults.opponentMove = 0;
     gBattleResults.poke1Species = 0;
     gBattleResults.opponentSpecies = 0;
     gBattleResults.caughtPoke = 0;
-    for (i = 0; i < 10; i++)
+    for (i = 0; i < POKEMON_NAME_LENGTH; i++)
     {
         gBattleResults.pokeString1[i] = 0;
         gBattleResults.pokeString2[i] = 0;
         gBattleResults.caughtNick[i] = 0;
     }
 #if DEBUG
-    gSharedMem[0x1609E] = 0;
-    gSharedMem[0x1609F] = 0;
+    gBattleStruct->unk1609E = 0;
+    gBattleStruct->unk1609F = 0;
 #endif
 }
 
@@ -5374,8 +5375,8 @@ void HandleAction_Switch(void)
     gBattlescriptCurrInstr = BattleScript_ActionSwitch;
     gCurrentActionFuncId = B_ACTION_EXEC_SCRIPT;
 
-    if (gBattleResults.unk2 < 255)
-        gBattleResults.unk2++;
+    if (gBattleResults.playerSwitchesCounter < 255)
+        gBattleResults.playerSwitchesCounter++;
 }
 
 void HandleAction_UseItem(void)

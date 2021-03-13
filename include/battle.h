@@ -232,27 +232,26 @@ struct StatsArray
 
 struct BattleResults
 {
-    u8 playerFaintCounter;    // 0x0
-    u8 opponentFaintCounter;  // 0x1
-    u8 unk2;                  // 0x2
-    u8 unk3;                  // 0x3
-    u8 unk4;                  // 0x4
-    u8 playerMonWasDamaged:1; // 0x5
-    u8 unk5_1:1;              // 0x5
-    u16 poke1Species;         // 0x6
-    u8 pokeString1[10];       // 0x8
-    u8 unk12;
-    u8 battleTurnCounter;     // 0x13
-    u8 pokeString2[10];       // 0x14
-    u8 filler1E[2];
-    u16 lastOpponentSpecies;  // 0x20
-    u16 lastUsedMove;         // 0x22
-    u16 opponentMove;         // 0x24
-    u16 opponentSpecies;      // 0x26
-    u16 caughtPoke;           // 0x28
-    u8 caughtNick[10];        // 0x2A
-    u8 filler34[2];
-    u8 usedBalls[11];
+    u8 playerFaintCounter;                   // 0x0
+    u8 opponentFaintCounter;                 // 0x1
+    u8 playerSwitchesCounter;                // 0x2
+    u8 numHealingItemsUsed;                  // 0x3
+    u8 numRevivesUsed;                       // 0x4
+    u8 playerMonWasDamaged:1;                // 0x5
+    u8 usedMasterBall:1;                     // 0x5
+    u16 poke1Species;                        // 0x6
+    u8 pokeString1[POKEMON_NAME_LENGTH + 1]; // 0x8
+    u8 battleTurnCounter;                    // 0x13
+    u8 pokeString2[POKEMON_NAME_LENGTH + 1]; // 0x14
+    u8 pokeblockThrows;                      // 0x1F
+    u16 lastOpponentSpecies;                 // 0x20
+    u16 lastUsedMove;                        // 0x22
+    u16 opponentMove;                        // 0x24
+    u16 opponentSpecies;                     // 0x26
+    u16 caughtPoke;                          // 0x28
+    u8 caughtNick[POKEMON_NAME_LENGTH + 1];  // 0x2A
+    u8 filler35;                             // 0x35
+    u8 usedBalls[11];                        // 0x36
 };
 
 union TrainerMonPtr
@@ -377,7 +376,7 @@ struct BattleStruct /* 0x2000000 */
     /*0x160A9*/ u8 unk160A9;
     /*0x160AA*/ u8 unk160Aa;
     /*0x160AB*/ u8 unk160Ab;
-    /*0x160AC*/ u8 unk160AC[8];
+    /*0x160AC*/ u8 lastTakenMove[8];
     /*0x160B4*/ u8 unk160B4[8];
     /*0x160BC*/ u16 HP_OnSwitchout[2];
     /*0x160C0*/ u8 abilityPreventingSwitchout;
@@ -406,8 +405,7 @@ struct BattleStruct /* 0x2000000 */
     /*0x160E5*/ u8 unk160E5;
     /*0x160E6*/ u8 unk160E6;
     /*0x160E7*/ u8 atkCancellerTracker;
-    /*0x160E8*/ u8 unk160E8[8];
-    /*0x160F0*/ u8 unk160F0[8];
+    /*0x160E8*/ u8 lastTakenMoveFrom0[2 * 8];
     /*0x160F8*/ u8 unk160F8;
     /*0x160F9*/ u8 unk160F9;
     /*0x160FA*/ u8 unk160FA;
@@ -416,8 +414,7 @@ struct BattleStruct /* 0x2000000 */
     /*0x160FD*/ u8 unk160FD;
     /*0x160FE*/ u8 unk160FE;
     /*0x160FF*/ u8 unk160FF;
-	/*0x16100*/ u8 unk16100[8];
-    /*0x16108*/ u8 unk16108[8];
+	/*0x16100*/ u8 lastTakenMoveFrom1[2 * 8];
     /*0x16110*/ u8 wishPerishSongState;
     /*0x16111*/ u8 wishPerishSongBattlerId;
     /*0x16112*/ u8 unk16112;
