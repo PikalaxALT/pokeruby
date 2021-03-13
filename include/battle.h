@@ -376,8 +376,7 @@ struct BattleStruct /* 0x2000000 */
     /*0x160A9*/ u8 unk160A9;
     /*0x160AA*/ u8 unk160Aa;
     /*0x160AB*/ u8 unk160Ab;
-    /*0x160AC*/ u8 lastTakenMove[8];
-    /*0x160B4*/ u8 unk160B4[8];
+    /*0x160AC*/ u8 lastTakenMove[MAX_BATTLERS_COUNT * 2 * 2];
     /*0x160BC*/ u16 HP_OnSwitchout[2];
     /*0x160C0*/ u8 abilityPreventingSwitchout;
     /*0x160C1*/ u8 hpScale;
@@ -386,7 +385,7 @@ struct BattleStruct /* 0x2000000 */
     /*0x160C8*/ u8 AI_monToSwitchIntoId[2];
     /*0x160CA*/ u8 synchroniseEffect;
     /*0x160CB*/ u8 linkPlayerIndex;
-    /*0x160CC*/ u16 usedHeldItems[4];
+    /*0x160CC*/ u16 usedHeldItems[MAX_BATTLERS_COUNT];
     /*0x160D4*/ u8 unk160D4;
     /*0x160D5*/ u8 unk160D5;
     /*0x160D6*/ u8 unk160D6;
@@ -405,7 +404,8 @@ struct BattleStruct /* 0x2000000 */
     /*0x160E5*/ u8 unk160E5;
     /*0x160E6*/ u8 unk160E6;
     /*0x160E7*/ u8 atkCancellerTracker;
-    /*0x160E8*/ u8 lastTakenMoveFrom0[2 * 8];
+    /*0x160E8*/ u16 choicedMove[MAX_BATTLERS_COUNT];
+    /*0x160F0*/ u16 changedItems[MAX_BATTLERS_COUNT];
     /*0x160F8*/ u8 unk160F8;
     /*0x160F9*/ u8 unk160F9;
     /*0x160FA*/ u8 unk160FA;
@@ -414,7 +414,7 @@ struct BattleStruct /* 0x2000000 */
     /*0x160FD*/ u8 unk160FD;
     /*0x160FE*/ u8 unk160FE;
     /*0x160FF*/ u8 unk160FF;
-	/*0x16100*/ u8 lastTakenMoveFrom1[2 * 8];
+	/*0x16100*/ u8 lastTakenMoveFrom[MAX_BATTLERS_COUNT * 2 * 2];
     /*0x16110*/ u8 wishPerishSongState;
     /*0x16111*/ u8 wishPerishSongBattlerId;
     /*0x16112*/ u8 unk16112;

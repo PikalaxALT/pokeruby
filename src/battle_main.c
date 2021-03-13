@@ -3490,12 +3490,12 @@ void BattleStartClearSetData(void)
     for (i = 0; i < 8; i++)
     {
         // TODO: Replace these with gBattleStruct access but make it match
-        ewram160ACarr(i) = 0; // *((u8 *)gBattleStruct->lastTakenMove + i) = 0;
-        ewram160CCarr(i) = 0; // *((u8 *)gBattleStruct->usedHeldItems + i) = 0;
-        ewram160E8arr(i) = 0; // *(i + 0 * 8 + (u8 *)gBattleStruct->lastTakenMoveFrom0 + 0) = 0;
-        ewram160F0arr(i) = 0; // *(i + 1 * 8 + (u8 *)gBattleStruct->lastTakenMoveFrom0 + 0) = 0;
-        ewram16100arr(i) = 0; // *(i + 0 * 8 + (u8 *)gBattleStruct->lastTakenMoveFrom1 + 0) = 0;
-        ewram16108arr(i) = 0; // *(i + 1 * 8 + (u8 *)gBattleStruct->lastTakenMoveFrom1 + 0) = 0;
+        ewram160ACarr(i) /* *((u8 *)gBattleStruct->lastTakenMove + i) */ = 0;
+        ewram160CCarr(i) /* *((u8 *)gBattleStruct->usedHeldItems + i) */ = 0;
+        ewram160E8arr(i) /* *((u8 *)gBattleStruct->choicedMove + i) */ = 0;
+        ewram160F0arr(i) /* *((u8 *)gBattleStruct->changedItems + i) */ = 0;
+        ewram16100arr(i) /* *(i + 0 * 8 + (u8 *)gBattleStruct->lastTakenMoveFrom + 0) */ = 0;
+        ewram16108arr(i) /* *(i + 1 * 8 + (u8 *)gBattleStruct->lastTakenMoveFrom + 0) */ = 0;
     }
 
     gBattleStruct->AI_monToSwitchIntoId[0] = PARTY_SIZE;
@@ -3577,7 +3577,7 @@ void SwitchInClearSetData(void)
     {
         if (gBattleMons[i].status2 & STATUS2_INFATUATED_WITH(gActiveBattler))
             gBattleMons[i].status2 &= ~(STATUS2_INFATUATED_WITH(gActiveBattler));
-        if ((gBattleMons[i].status2 & STATUS2_WRAPPED) && ewram16020arr(i) == gActiveBattler)
+        if ((gBattleMons[i].status2 & STATUS2_WRAPPED) && ewram16020arr(i) /* *(gBattleStruct->wrappedBy + i) */ == gActiveBattler)
             gBattleMons[i].status2 &= ~STATUS2_WRAPPED;
     }
 
@@ -3602,14 +3602,14 @@ void SwitchInClearSetData(void)
     gLastPrintedMoves[gActiveBattler] = 0;
     gLastHitBy[gActiveBattler] = 0xFF;
 
-    ewram160ACarr2(0, gActiveBattler) = 0;
-    ewram160ACarr2(1, gActiveBattler) = 0;
-    ewram16100arr2(0, gActiveBattler) = 0;
-    ewram16100arr2(1, gActiveBattler) = 0;
-    ewram16100arr2(2, gActiveBattler) = 0;
-    ewram16100arr2(3, gActiveBattler) = 0;
-    ewram160E8arr2(0, gActiveBattler) = 0;
-    ewram160E8arr2(1, gActiveBattler) = 0;
+    ewram160ACarr2(0, gActiveBattler) /* *(gBattleStruct->lastTakenMove + gActiveBattler * 2 + 0) */ = 0;
+    ewram160ACarr2(1, gActiveBattler) /* *(gBattleStruct->lastTakenMove + gActiveBattler * 2 + 1) */ = 0;
+    ewram16100arr2(0, gActiveBattler) /* *(0 * 2 + gActiveBattler * 8 + (u8*)(gBattleStruct->lastTakenMoveFrom) + 0) */ = 0;
+    ewram16100arr2(1, gActiveBattler) /* *(0 * 2 + gActiveBattler * 8 + (u8*)(gBattleStruct->lastTakenMoveFrom) + 1) */ = 0;
+    ewram16100arr2(2, gActiveBattler) /* *(1 * 2 + gActiveBattler * 8 + (u8*)(gBattleStruct->lastTakenMoveFrom) + 0) */ = 0;
+    ewram16100arr2(3, gActiveBattler) /* *(1 * 2 + gActiveBattler * 8 + (u8*)(gBattleStruct->lastTakenMoveFrom) + 1) */ = 0;
+    ewram160E8arr2(0, gActiveBattler) /* *(u8*)((u8*)(&gBattleStruct->choicedMove[gActiveBattler]) + 0) */ = 0;
+    ewram160E8arr2(1, gActiveBattler) /* *(u8*)((u8*)(&gBattleStruct->choicedMove[gActiveBattler]) + 1) */ = 0;
 
     eFlashFireArr.arr[gActiveBattler] = 0;
 
@@ -3631,7 +3631,7 @@ void UndoEffectsAfterFainting(void)
             gBattleMons[i].status2 &= ~STATUS2_ESCAPE_PREVENTION;
         if (gBattleMons[i].status2 & STATUS2_INFATUATED_WITH(gActiveBattler))
             gBattleMons[i].status2 &= ~(STATUS2_INFATUATED_WITH(gActiveBattler));
-        if ((gBattleMons[i].status2 & STATUS2_WRAPPED) && ewram16020arr(i) == gActiveBattler)
+        if ((gBattleMons[i].status2 & STATUS2_WRAPPED) && ewram16020arr(i) /* *(gBattleStruct->wrappedBy + i) */ == gActiveBattler)
             gBattleMons[i].status2 &= ~STATUS2_WRAPPED;
     }
     gActionSelectionCursor[gActiveBattler] = 0;
@@ -3666,14 +3666,14 @@ void UndoEffectsAfterFainting(void)
     gLastPrintedMoves[gActiveBattler] = 0;
     gLastHitBy[gActiveBattler] = 0xFF;
 
-    ewram160E8arr2(0, gActiveBattler) = 0;
-    ewram160E8arr2(1, gActiveBattler) = 0;
-    ewram160ACarr2(0, gActiveBattler) = 0;
-    ewram160ACarr2(1, gActiveBattler) = 0;
-    ewram16100arr2(0, gActiveBattler) = 0;
-    ewram16100arr2(1, gActiveBattler) = 0;
-    ewram16100arr2(2, gActiveBattler) = 0;
-    ewram16100arr2(3, gActiveBattler) = 0;
+    ewram160E8arr2(0, gActiveBattler) /* *(u8*)((u8*)(&gBattleStruct->choicedMove[gActiveBattler]) + 0) */ = 0;
+    ewram160E8arr2(1, gActiveBattler) /* *(u8*)((u8*)(&gBattleStruct->choicedMove[gActiveBattler]) + 1) */ = 0;
+    ewram160ACarr2(0, gActiveBattler) /* *(gBattleStruct->lastTakenMove + gActiveBattler * 2 + 0) */ = 0;
+    ewram160ACarr2(1, gActiveBattler) /* *(gBattleStruct->lastTakenMove + gActiveBattler * 2 + 1) */ = 0;
+    ewram16100arr2(0, gActiveBattler) /* *(0 * 2 + gActiveBattler * 8 + (u8*)(gBattleStruct->lastTakenMoveFrom) + 0) */ = 0;
+    ewram16100arr2(1, gActiveBattler) /* *(0 * 2 + gActiveBattler * 8 + (u8*)(gBattleStruct->lastTakenMoveFrom) + 1) */ = 0;
+    ewram16100arr2(2, gActiveBattler) /* *(1 * 2 + gActiveBattler * 8 + (u8*)(gBattleStruct->lastTakenMoveFrom) + 0) */ = 0;
+    ewram16100arr2(3, gActiveBattler) /* *(1 * 2 + gActiveBattler * 8 + (u8*)(gBattleStruct->lastTakenMoveFrom) + 1) */ = 0;
 
     eFlashFireArr.arr[gActiveBattler] = 0;
 
@@ -3733,14 +3733,14 @@ void sub_8011384(void)
             }
             else
             {
-                u8 r0;
+                u16 *hpOnSwitchout;
 
                 MEMSET_ALT(&gBattleMons[gActiveBattler], gBattleBufferB[gActiveBattler][4 + i], 0x58, i, ptr);
                 gBattleMons[gActiveBattler].type1 = gBaseStats[gBattleMons[gActiveBattler].species].type1;
                 gBattleMons[gActiveBattler].type2 = gBaseStats[gBattleMons[gActiveBattler].species].type2;
                 gBattleMons[gActiveBattler].ability = GetAbilityBySpecies(gBattleMons[gActiveBattler].species, gBattleMons[gActiveBattler].altAbility);
-                r0 = GetBattlerSide(gActiveBattler);
-                ewram160BC[r0] = gBattleMons[gActiveBattler].hp;
+                hpOnSwitchout = &gBattleStruct->HP_OnSwitchout[GetBattlerSide(gActiveBattler)];
+                *hpOnSwitchout = gBattleMons[gActiveBattler].hp;
                 for (i = 0; i < 8; i++)
                     gBattleMons[gActiveBattler].statStages[i] = 6;
                 gBattleMons[gActiveBattler].status2 = 0;
