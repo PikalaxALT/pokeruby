@@ -1303,7 +1303,7 @@ bool8 HandleFaintedMonActions(void)
             do
             {
                 gBank1 = gBattlerTarget = gBattleStruct->unk1605A;
-                if (gBattleMons[gBattleStruct->unk1605A].hp == 0 && !(gBattleStruct->unk16113 & gBitTable[gBattlerPartyIndexes[gBattleStruct->unk1605A]]) && !(gAbsentBattlerFlags & gBitTable[gBattleStruct->unk1605A]))
+                if (gBattleMons[gBattleStruct->unk1605A].hp == 0 && !(gBattleStruct->givenExpMons & gBitTable[gBattlerPartyIndexes[gBattleStruct->unk1605A]]) && !(gAbsentBattlerFlags & gBitTable[gBattleStruct->unk1605A]))
                 {
                     BattleScriptExecute(BattleScript_GiveExp);
                     gBattleStruct->sub80173A4_Tracker = 2;
