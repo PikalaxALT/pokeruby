@@ -2674,9 +2674,9 @@ void PlayerHandlecmd22(void)
 
     gUnknown_0300434C[gActiveBattler] = CreateTask(TaskDummy, 0xFF);
     gTasks[gUnknown_0300434C[gActiveBattler]].data[0] = gBattleBufferA[gActiveBattler][1] & 0xF;
-    ewram16054 = gBattleBufferA[gActiveBattler][1] >> 4;
-    EWRAM_1609D = gBattleBufferA[gActiveBattler][2];
-    ewram160C0 = gBattleBufferA[gActiveBattler][3];
+    gBattleStruct->battlerPreventingSwitchout = gBattleBufferA[gActiveBattler][1] >> 4;
+    gBattleStruct->unk1609D = gBattleBufferA[gActiveBattler][2];
+    gBattleStruct->abilityPreventingSwitchout = gBattleBufferA[gActiveBattler][3];
     for (i = 0; i < 3; i++)
         gUnknown_02038470[i] = gBattleBufferA[gActiveBattler][4 + i];
     BeginNormalPaletteFade(0xFFFFFFFF, 0, 0, 16, RGB(0, 0, 0));

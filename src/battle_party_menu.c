@@ -683,7 +683,7 @@ static void Task_BattlePartyMenuShift(u8 taskId)
         gTasks[taskId].func = Task_80954C0;
         return;
     }
-    if (sub_8094C20(partySelection) == EWRAM_1609D)
+    if (sub_8094C20(partySelection) == gBattleStruct->unk1609D)
     {
         sub_806D5A4();
         GetMonNickname(&gPlayerParty[partySelection], gStringVar1);

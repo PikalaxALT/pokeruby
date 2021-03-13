@@ -1300,15 +1300,15 @@ void BoxMonRestorePP(struct BoxPokemon *boxMon)
 
 void sub_8040B8C(void)
 {
-    gLastUsedAbility = gBattleStruct->unk160C0;;
+    gLastUsedAbility = gBattleStruct->abilityPreventingSwitchout;;
     gBattleTextBuff1[0] = 0xFD;
     gBattleTextBuff1[1] = 4;
-    gBattleTextBuff1[2] = gBattleStruct->unk16054;
+    gBattleTextBuff1[2] = gBattleStruct->battlerPreventingSwitchout;
     gBattleTextBuff1[4] = EOS;
-    if (!GetBattlerSide(gBattleStruct->unk16054))
-        gBattleTextBuff1[3] = pokemon_order_func(gBattlerPartyIndexes[gBattleStruct->unk16054]);
+    if (!GetBattlerSide(gBattleStruct->battlerPreventingSwitchout))
+        gBattleTextBuff1[3] = pokemon_order_func(gBattlerPartyIndexes[gBattleStruct->battlerPreventingSwitchout]);
     else
-        gBattleTextBuff1[3] = gBattlerPartyIndexes[gBattleStruct->unk16054];
+        gBattleTextBuff1[3] = gBattlerPartyIndexes[gBattleStruct->battlerPreventingSwitchout];
     gBattleTextBuff2[0] = 0xFD;
     gBattleTextBuff2[1] = 4;
     gBattleTextBuff2[2] = gBankInMenu;

@@ -338,14 +338,14 @@ static void BufferPartyVsScreenHealth_AtStart(void)
     s32 i;
 
     BUFFER_PARTY_VS_SCREEN_STATUS(gPlayerParty, flags, i);
-    gBattleStruct->multiPartnerEnigmaBerry.vsScreenHealthFlagsLo = flags;
-    gBattleStruct->multiPartnerEnigmaBerry.vsScreenHealthFlagsHi = flags >> 8;
+    gBattleStruct->multiBuffers.multiPartnerEnigmaBerry.vsScreenHealthFlagsLo = flags;
+    gBattleStruct->multiBuffers.multiPartnerEnigmaBerry.vsScreenHealthFlagsHi = flags >> 8;
 }
 
 static void SetPlayerBerryDataInBattleStruct(void)
 {
     s32 i;
-    struct BattleEnigmaBerry *enigmaBerry = &gBattleStruct->multiPartnerEnigmaBerry.battleEnigmaBerry;
+    struct BattleEnigmaBerry *enigmaBerry = &gBattleStruct->multiBuffers.multiPartnerEnigmaBerry.battleEnigmaBerry;
 
     for (i = 0; i < 7; i++)
         enigmaBerry->name[i] = gSaveBlock1.enigmaBerry.berry.name[i];
@@ -427,7 +427,7 @@ void CB2_HandleStartBattle(void)
     BuildOamBuffer();
 
     playerId = GetMultiplayerId();
-    ewram160CB = playerId;
+    gBattleStruct->linkPlayerIndex = playerId;
     enemyId = playerId ^ 1;
 
     switch (gBattleCommunication[MULTIUSE_STATE])
@@ -438,8 +438,8 @@ void CB2_HandleStartBattle(void)
             if (gReceivedRemoteLinkPlayers != 0 && IsLinkTaskFinished())
             {
                 // 0x101
-                gBattleStruct->multiPartnerEnigmaBerry.versionSignatureLo = 1;
-                gBattleStruct->multiPartnerEnigmaBerry.versionSignatureHi = 1;
+                gBattleStruct->multiBuffers.multiPartnerEnigmaBerry.versionSignatureLo = 1;
+                gBattleStruct->multiBuffers.multiPartnerEnigmaBerry.versionSignatureHi = 1;
                 BufferPartyVsScreenHealth_AtStart();
                 SetPlayerBerryDataInBattleStruct();
 #if DEBUG
@@ -452,7 +452,7 @@ void CB2_HandleStartBattle(void)
                     }
                 }
 #endif
-                SendBlock(bitmask_all_link_players_but_self(), gBattleStruct, 32);
+                SendBlock(bitmask_all_link_players_but_self(), &gBattleStruct->multiBuffers.multiPartnerEnigmaBerry, sizeof(gBattleStruct->multiBuffers.multiPartnerEnigmaBerry));
                 gBattleCommunication[MULTIUSE_STATE] = 1;
             }
         }
@@ -507,7 +507,7 @@ void CB2_HandleStartBattle(void)
             gTasks[taskId].data[1] = 0x10E;
             gTasks[taskId].data[2] = 0x5A;
             gTasks[taskId].data[5] = 0;
-            gTasks[taskId].data[3] = gBattleStruct->multiPartnerEnigmaBerry.vsScreenHealthFlagsLo | (gBattleStruct->multiPartnerEnigmaBerry.vsScreenHealthFlagsHi << 8);
+            gTasks[taskId].data[3] = gBattleStruct->multiBuffers.multiPartnerEnigmaBerry.vsScreenHealthFlagsLo | (gBattleStruct->multiBuffers.multiPartnerEnigmaBerry.vsScreenHealthFlagsHi << 8);
             gTasks[taskId].data[4] = gBlockRecvBuffer[enemyId][1];
             gBattleCommunication[MULTIUSE_STATE]++;
         }
@@ -607,7 +607,7 @@ void sub_800F02C(void)
         if (gMultiPartnerParty[i].language != 1)
             PadNameString(nickname, 0);
     }
-    memcpy(gSharedMem, gMultiPartnerParty, 0x60);
+    memcpy(gBattleStruct->multiBuffers.multiBattleMons, gMultiPartnerParty, sizeof(gBattleStruct->multiBuffers.multiBattleMons));
 }
 
 void sub_800F104(void)
@@ -618,10 +618,10 @@ void sub_800F104(void)
     s32 i;
 
     playerId = GetMultiplayerId();
-    ewram160CB = playerId;
+    gBattleStruct->linkPlayerIndex = playerId;
     // Seriously, Game Freak?
-    pSavedCallback = ewram160C4_Callback;
-    pSavedBattleTypeFlags = ewram160C2_Flags;
+    pSavedCallback = &gBattleStruct->callback;
+    pSavedBattleTypeFlags = &gBattleStruct->battleTypeFlags;
     RunTasks();
     AnimateSprites();
     BuildOamBuffer();
@@ -644,7 +644,7 @@ void sub_800F104(void)
             if (IsLinkTaskFinished())
             {
                 sub_800F02C();
-                SendBlock(bitmask_all_link_players_but_self(), gSharedMem, 0x60);
+                SendBlock(bitmask_all_link_players_but_self(), gBattleStruct->multiBuffers.multiBattleMons, sizeof(gBattleStruct->multiBuffers.multiBattleMons));
                 gBattleCommunication[MULTIUSE_STATE]++;
             }
         }
@@ -695,7 +695,7 @@ void sub_800F298(void)
     s32 id;
 
     playerId = GetMultiplayerId();
-    ewram160CB = playerId;
+    gBattleStruct->linkPlayerIndex = playerId;
     RunTasks();
     AnimateSprites();
     BuildOamBuffer();
@@ -717,11 +717,11 @@ void sub_800F298(void)
             if (IsLinkTaskFinished())
             {
                 // 0x101
-                gBattleStruct->multiPartnerEnigmaBerry.versionSignatureLo = 1;
-                gBattleStruct->multiPartnerEnigmaBerry.versionSignatureHi = 1;
+                gBattleStruct->multiBuffers.multiPartnerEnigmaBerry.versionSignatureLo = 1;
+                gBattleStruct->multiBuffers.multiPartnerEnigmaBerry.versionSignatureHi = 1;
                 BufferPartyVsScreenHealth_AtStart();
                 SetPlayerBerryDataInBattleStruct();
-                SendBlock(bitmask_all_link_players_but_self(), gSharedMem, 0x20);
+                SendBlock(bitmask_all_link_players_but_self(), &gBattleStruct->multiBuffers.multiPartnerEnigmaBerry, sizeof(gBattleStruct->multiBuffers.multiPartnerEnigmaBerry));
                 gBattleCommunication[MULTIUSE_STATE]++;
             }
         }
@@ -1205,7 +1205,7 @@ void sub_800FE40(u8 taskId)
 {
     struct Pokemon *sp4 = NULL;
     struct Pokemon *sp8 = NULL;
-    u8 r2 = ewram160CB;
+    u8 r2 = gBattleStruct->linkPlayerIndex;
     u32 r7;
     s32 i;
 
